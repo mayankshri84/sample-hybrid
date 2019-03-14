@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<screens>
+	<screen id="home">
+		<object name="">xpath=//testpath</object>
+	</screen>
+</screens>

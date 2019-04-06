@@ -27,6 +27,7 @@ public class Utils {
 			System.out.println(list);
 			for(int i=0; i<list.getLength();i++){
 				Node n = list.item(i);
+				System.out.println(n);
 				System.out.println(n.getUserData("id"));
 			}
 		}

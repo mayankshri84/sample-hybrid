@@ -1,39 +1,65 @@
 package com.util;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 
-import javax.xml.parsers.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class Utils {
 
 	public static void main(String[] args) {
-		new Utils().xmlParser(System.getProperty("user.dir")+"/src/files/object_repository.xml");
+		System.out.println(new Utils().xmlParser("home","username"));
 	}
-	
-	public void xmlParser(String xmlPath) {
-		try
-		{
+
+	public String xmlParser(String name, String screen) {
+		String object = "";
+		try {
+			String xmlPath = System.getProperty("user.dir")+ "/src/files/object_repository.xml";
 			File fXmlFile = new File(xmlPath);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(fXmlFile);
 			doc.getDocumentElement().normalize();
-			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 			NodeList list = doc.getElementsByTagName("screen");
-			System.out.println(list);
-			for(int i=0; i<list.getLength();i++){
+			for (int i = 0; i < list.getLength(); i++) {
 				Node n = list.item(i);
-				System.out.println(n);
-				System.out.println(n.getUserData("id"));
+				if (n.getNodeType() == Node.ELEMENT_NODE) {
+					Element element = (Element) n;
+					NodeList objects = element.getElementsByTagName("object");
+					if (element.getAttribute("id").equals(screen)) {
+						for (int j = 0; j < objects.getLength(); j++) {
+							Node n1 = objects.item(j);
+							if (n1.getNodeType() == Node.ELEMENT_NODE) {
+								Element ele2 = (Element) n1;
+								if (ele2.getAttribute("name").equals(name)) {
+									object = element
+											.getElementsByTagName("object")
+											.item(j).getTextContent();
+								}
+							}
+						}
+					}
+				}
+
 			}
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		if(object.trim().equals(""))
+			try {
+				throw new ElementIsNotInObjectRepositoryException("element not present in repository");
+			} catch (ElementIsNotInObjectRepositoryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		return object;
 	}
 
 	public void readFile(String filePath) {
@@ -50,4 +76,13 @@ public class Utils {
 
 	}
 
+}
+
+class ElementIsNotInObjectRepositoryException extends Exception{
+	
+	public ElementIsNotInObjectRepositoryException(String s){
+		super(s);
+	}
+	
+	
 }

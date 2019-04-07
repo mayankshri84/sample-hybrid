@@ -22,14 +22,10 @@ Feature: Title of your feature
 
   @tag1
   Scenario: Title of your scenario
-    Given user launching "ie" broswer and open "https://www.google.com" app
-    When user click on "element" button on "home" screen
-    Then user type "testText" on "element" in "home" screen
-    And user select "testText" on "element" in "home" screen
-    Then user hover on "element1" and click on "element2" on "home" screen
-    
-    
-    
-    
-
-  
+    Given user launching "chrome" broswer and open "https://github.com/" app
+    Then user click on "loginlink" button on "login" screen
+    When user type "mayankshri84@gmail.com" on "username" in "login" screen
+    Then user type "Roli_2018" on "password" in "login" screen
+    And user click on "signin" button on "login" screen
+    #And user select "testText" on "element" in "home" screen
+    #Then user hover on "element1" and click on "element2" on "home" screen

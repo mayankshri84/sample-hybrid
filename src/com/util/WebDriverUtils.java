@@ -12,7 +12,7 @@ public class WebDriverUtils {
     }
 
     public By getBy(String element){
-        String[] type = element.split(":");
+        String[] type = element.split("=");
         if(type[0].equalsIgnoreCase("XPATH"))
             return By.xpath(type[1]);
         else
@@ -27,6 +27,9 @@ public class WebDriverUtils {
         else
         if(type[0].equalsIgnoreCase("LINKTEXT"))
             return By.linkText(type[1]);
+        else
+            if(type[0].equalsIgnoreCase("NAME"))
+                return By.name(type[1]);
         else
         	return null;
     }

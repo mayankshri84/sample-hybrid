@@ -7,6 +7,8 @@ import java.io.FileReader;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -15,7 +17,9 @@ import org.w3c.dom.NodeList;
 public class Utils {
 
 	public static void main(String[] args) {
-		System.out.println(new Utils().xmlParser("home","username"));
+		//System.out.println(new Utils().xmlParser("home","username"));
+		Utils utils = new Utils();
+		utils.jsonReader(utils.readFile(System.getProperty("user.dir")+ "/src/files/data.json"), "dataref1", "username");
 	}
 
 	public String xmlParser(String name, String screen) {
@@ -62,18 +66,35 @@ public class Utils {
 		return object;
 	}
 
-	public void readFile(String filePath) {
+	public String readFile(String filePath) {
 		BufferedReader br = null;
+		StringBuilder str = new StringBuilder();
 		try {
 			br = new BufferedReader(new FileReader(new File(filePath)));
 			String currentLine = null;
-			while ((currentLine = br.readLine()) == null) {
-				System.out.println(currentLine);
+			while ((currentLine = br.readLine()) != null) {
+				//System.out.println(currentLine);
+				str.append(currentLine);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		return str.toString();
+	}
+	
+	
+	public void jsonReader(String json, String dataRef, String key){
+		try {
+			JSONObject object = new JSONObject(json);
+			 
+			JSONArray array = (JSONArray) object.get(dataRef);
+			JSONObject obj = (JSONObject) array.get(0);
+			System.out.println(obj.get(key));;
+				
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -11,8 +11,8 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.Select;
 
-import com.util.Utils;
-import com.util.WebDriverUtils;
+import com.utils.Utils;
+import com.utils.WebDriverUtils;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;

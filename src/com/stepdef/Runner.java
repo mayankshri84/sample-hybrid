@@ -1,9 +1,12 @@
 package com.stepdef;
 
+import org.junit.runner.RunWith;
+
+import cucumber.api.CucumberOptions;
+import cucumber.api.junit.Cucumber;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(features = "src/com/features", glue = { "com.stepdef" }, dryRun = false, tags = "@Scenario1")
 public class Runner {
-	public static void main(String[] args) throws Throwable {
-	    String[] arguments = {"mvn", "clean"};
-	    cucumber.api.cli.Main.main(arguments);
-	}
 
 }

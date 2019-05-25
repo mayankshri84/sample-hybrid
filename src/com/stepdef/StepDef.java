@@ -2,6 +2,7 @@ package com.stepdef;
 
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -55,15 +56,34 @@ public class StepDef {
 	@When("user click on {string} button on {string} screen")
 	public void user_click_on_button_on_screen(String ele, String screen) {
 			String element = new Utils().xmlParser(ele, screen);
-	    	driver.findElement(webDriverUtils.getBy(element)).click();
-	    	driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+			WebElement webElement = driver.findElement(webDriverUtils.getBy(element));
+			try{
+				driver.findElement(webDriverUtils.getBy(element)).click();
+		    	driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+		    	return;
+			}
+			catch(Exception e){
+				
+			}
+	    	JavascriptExecutor executor = (JavascriptExecutor)driver;
+	    	executor.executeScript("arguments[0].click();", webElement);
 	    }
 
 	@Then("user type {string} on {string} in {string} screen")
 	public void user_type_on_in_screen(String text, String ele, String screen) {
 		String element = new Utils().xmlParser(ele, screen);
-		driver.findElement(webDriverUtils.getBy(element)).sendKeys(text);
-		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+		WebElement webElement = driver.findElement(webDriverUtils.getBy(element));
+		try{
+			webElement.sendKeys(text);
+			driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+			return;
+		}
+		catch(Exception e){
+			
+		}
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		js.executeScript("document.getElementById('"+webElement.getAttribute("id")+"').value='"+text+"';");
+		
 	}
 
 	@Then("user select {string} on {string} in {string} screen")

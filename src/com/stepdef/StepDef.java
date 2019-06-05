@@ -2,6 +2,9 @@ package com.stepdef;
 
 import java.util.concurrent.TimeUnit;
 
+
+
+
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,9 +15,12 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.Select;
 
+import com.utils.HtmlReporter;
 import com.utils.Utils;
 import com.utils.WebDriverUtils;
 
+import cucumber.api.java.After;
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -23,9 +29,13 @@ public class StepDef {
 	
 	private WebDriver driver;
 	WebDriverUtils webDriverUtils = new WebDriverUtils(driver);
+	HtmlReporter report = new HtmlReporter();
+	
+
 
 	@Given("user launching {string} broswer and open {string} app")
 	public void user_launching_broswer_and_open_app(String browser,String url) {
+		
 		if(browser.equalsIgnoreCase("IE")){
 			DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();
 			capabilities.setCapability(CapabilityType.BROWSER_NAME, "internet explorer");
@@ -49,6 +59,7 @@ public class StepDef {
 		else{
 
 		}
+		report.appendReport(report.reportHead());
 	}
 	
 	
@@ -58,15 +69,23 @@ public class StepDef {
 			String element = new Utils().xmlParser(ele, screen);
 			WebElement webElement = driver.findElement(webDriverUtils.getBy(element));
 			try{
+				Thread.sleep(2000);
 				driver.findElement(webDriverUtils.getBy(element)).click();
 		    	driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+		    	report.appendReport(report.reportBody(true, "user click on "+ele+" button on "+screen+" screen", ""));
 		    	return;
 			}
 			catch(Exception e){
 				
 			}
+			try{
 	    	JavascriptExecutor executor = (JavascriptExecutor)driver;
 	    	executor.executeScript("arguments[0].click();", webElement);
+	    	report.appendReport(report.reportBody(true, "user click on "+ele+" button on "+screen+" screen", ""));
+			}
+			catch(Exception e){
+				report.appendReport(report.reportBody(false, "user is unable to click on "+ele+" button on "+screen+" screen", ""));
+			}
 	    }
 
 	@Then("user type {string} on {string} in {string} screen")
@@ -74,8 +93,10 @@ public class StepDef {
 		String element = new Utils().xmlParser(ele, screen);
 		WebElement webElement = driver.findElement(webDriverUtils.getBy(element));
 		try{
+			Thread.sleep(2000);
 			webElement.sendKeys(text);
 			driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+			report.appendReport(report.reportBody(true, "User type "+text+" on "+ele+" in "+screen+" screen", ""));
 			return;
 		}
 		catch(Exception e){
@@ -83,7 +104,7 @@ public class StepDef {
 		}
 		JavascriptExecutor js = (JavascriptExecutor)driver;
 		js.executeScript("document.getElementById('"+webElement.getAttribute("id")+"').value='"+text+"';");
-		
+		report.appendReport(report.reportBody(true, "User type "+text+" on "+ele+" in "+screen+" screen", ""));
 	}
 
 	@Then("user select {string} on {string} in {string} screen")
@@ -91,6 +112,7 @@ public class StepDef {
 		String element = new Utils().xmlParser(ele, screen);
 	    new Select(driver.findElement(webDriverUtils.getBy(element))).selectByVisibleText(text);
 	    driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+	    report.appendReport(report.reportBody(true, "user select "+text+" on "+ele+" in "+screen+" screen", ""));
 	   
 	}
 
@@ -107,6 +129,10 @@ public class StepDef {
 	}
 
 
-
+	@When("user close browser")
+	public void user_close_browser(){
+		driver.close();
+		report.appendReport(report.reportFoot());
+	}
 
 }

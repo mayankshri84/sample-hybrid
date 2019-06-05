@@ -27,6 +27,7 @@ Feature: Title of your feature
     When user type "mayankshri84@gmail.com" on "username" in "login" screen
     Then user type "Roli_2018" on "password" in "login" screen
     And user click on "signin" button on "login" screen
+    And user close browser
 
   #And user select "testText" on "element" in "home" screen
   #Then user hover on "element1" and click on "element2" on "home" screen
@@ -37,3 +38,4 @@ Feature: Title of your feature
     When user type "mayankshri84@gmail.com" on "username" in "login" screen
     Then user type "Roli_2018" on "password" in "login" screen
     And user click on "signin" button on "login" screen
+    And user close browser

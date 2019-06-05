@@ -17,6 +17,8 @@ import org.openqa.selenium.logging.LogType;
 public class ObjectRepositoryHelper {
 
 	private WebDriver driver;
+	
+	
 
 	public void getObjects(String url) {
 		System.setProperty("webdriver.chrome.driver",
@@ -59,7 +61,7 @@ public class ObjectRepositoryHelper {
 		
 	}
 	
-	@Test
+	//@Test
 	public void testMethod(){
 		getObjects("https://www.wikihow.com/Define-a-JavaScript-Function-in-HTML");
 		analyzeLog();

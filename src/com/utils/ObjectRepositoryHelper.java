@@ -61,7 +61,7 @@ public class ObjectRepositoryHelper {
 		
 	}
 	
-	//@Test
+
 	public void testMethod(){
 		getObjects("https://www.wikihow.com/Define-a-JavaScript-Function-in-HTML");
 		analyzeLog();
